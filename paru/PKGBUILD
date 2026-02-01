@@ -5,7 +5,8 @@ pkgrel=2
 pkgdesc='Feature packed AUR helper'
 url='https://github.com/morganamilo/paru'
 source=("$pkgname-$pkgver.tar.gz::https://github.com/Morganamilo/paru/archive/v$pkgver.tar.gz"
-        0001-deps-use-latest-alpm-crate-commit.patch)
+        0001-deps-use-latest-alpm-crate-commit.patch
+	0002-fix-autocomplete-ignore-null-btye.patch)
 backup=("etc/paru.conf")
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv7h' 'armv6h' 'aarch64')
 license=('GPL-3.0-or-later')
@@ -13,13 +14,15 @@ makedepends=('cargo')
 depends=('git' 'pacman' 'libalpm.so>=14')
 optdepends=('bat: colored pkgbuild printing' 'devtools: build in chroot and downloading pkgbuilds')
 sha256sums=('eea4dbb524db765d5316f540f9ee670c0bf81aae4827b5417eebb4c9b5651727'
-            'c35eb11f6b98dd87d836deb3d54759f3beb14b97587f5e0a71c3cc51c9500f4b')
+            'c35eb11f6b98dd87d836deb3d54759f3beb14b97587f5e0a71c3cc51c9500f4b'
+            '1792d6ac3410efe7ee80df65a98a1e0a1bed25dc4df1cb8f0423d88b42124a1a')
 
 prepare() {
   cd "$pkgname-$pkgver"
 
   # patch for pacman 7.1.0
   patch -Np1 -i ../0001-deps-use-latest-alpm-crate-commit.patch
+  patch -Np1 -i ../0002-fix-autocomplete-ignore-null-btye.patch
 
   cargo fetch --locked --target "$(rustc -vV | sed -n 's|host: ||p')"
 }
